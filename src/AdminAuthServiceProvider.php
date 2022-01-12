@@ -96,19 +96,6 @@ class AdminAuthServiceProvider extends ServiceProvider
             $this->loadRoutesFrom(__DIR__ . '/../routes/activation-form.php');
         }
 
-        //This is just because laravel does not provide it by default, however expect in AuthenticationException that it exists
-        if (!Route::has('login')) {
-            Route::middleware(['web'])->namespace('Brackets\AdminAuth\Http\Controllers')->group(function () {
-                Route::get('/login', 'MissingRoutesController@redirect')->name('login');
-            });
-        }
-        //This is just because in welcome.blade.php someone was lazy to check if also register route exists and ask only for login
-        if (!Route::has('register')) {
-            Route::middleware(['web'])->namespace('Brackets\AdminAuth\Http\Controllers')->group(function () {
-                Route::get('/register', 'MissingRoutesController@redirect')->name('register');
-            });
-        }
-
         app(Router::class)->pushMiddlewareToGroup('admin', CanAdmin::class);
         app(Router::class)->pushMiddlewareToGroup('admin', ApplyUserLocale::class);
         app(Router::class)->aliasMiddleware('guest.admin', RedirectIfAuthenticated::class);
