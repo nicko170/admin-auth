@@ -18,11 +18,8 @@ class Handler extends ParentHandler
      */
     protected function unauthenticated($request, AuthenticationException $exception)
     {
-        if (strpos($request->getRequestUri(), '/admin') === 0) {
-            $url = route('brackets/admin-auth::admin/login');
-        } else {
-            $url = route('login');
-        }
+        $url = route('brackets/admin-auth::admin/login');
+       
         return $request->expectsJson()
             ? response()->json(['message' => $exception->getMessage()], 401)
             : redirect()->guest($url);
